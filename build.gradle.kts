@@ -67,6 +67,12 @@ allprojects {
         shadowJar {
             relocate("com.willfp.libreforge.loader", "com.willfp.ecoskills.libreforge.loader")
             relocate("com.willfp.ecomponent", "com.willfp.ecoskills.ecomponent")
+            relocate("com.willfp.libreforge", "com.willfp.ecoskills.libreforge.lib")
+            
+            // Exclude unwanted files
+            exclude("META-INF/maven/**")
+            exclude("META-INF/versions/**")
+            exclude("**/module-info.class")
         }
 
         compileKotlin {
