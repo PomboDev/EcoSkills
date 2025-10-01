@@ -65,13 +65,8 @@ allprojects {
 
     tasks {
         shadowJar {
-            // Basic relocations - let libreforge gradle plugin handle the rest
+            relocate("com.willfp.libreforge.loader", "com.willfp.ecoskills.libreforge.loader")
             relocate("com.willfp.ecomponent", "com.willfp.ecoskills.ecomponent")
-            
-            // Exclude unwanted files
-            exclude("META-INF/maven/**")
-            exclude("META-INF/versions/**")
-            exclude("**/module-info.class")
         }
 
         compileKotlin {
