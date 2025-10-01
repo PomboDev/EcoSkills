@@ -32,11 +32,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         
-      - name: Change wrapper permissions
+      - name: Make gradlew executable
         run: chmod +x ./gradlew
         
-      - name: Build with Gradle
-        run: ./gradlew clean build shadowJar
+      - name: Build with Gradle Wrapper
+        run: ./gradlew clean build shadowJar --no-daemon --stacktrace
         
       - name: Get version
         id: get_version
@@ -56,8 +56,12 @@ jobs:
           if [ -z "$JAR_FILE" ]; then
             JAR_FILE=$(find build/libs -name "*.jar" | grep -v sources | head -1)
           fi
+          if [ -z "$JAR_FILE" ]; then
+            JAR_FILE=$(find . -name "*.jar" -path "*/build/libs/*" | grep -v sources | head -1)
+          fi
           echo "jar_file=$JAR_FILE" >> $GITHUB_OUTPUT
           echo "jar_name=$(basename $JAR_FILE)" >> $GITHUB_OUTPUT
+          echo "Found JAR: $JAR_FILE"
           
       - name: Create Release
         id: create_release
@@ -77,8 +81,9 @@ jobs:
             
             ### Changes
             - Built from commit ${{ github.sha }}
+            - Supports Minecraft 1.17-1.21.8
             
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v3.65.0...${{ steps.get_version.outputs.version }}
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v3.66.1...${{ steps.get_version.outputs.version }}
           draft: false
           prerelease: false
           
@@ -91,3 +96,10 @@ jobs:
           asset_path: ${{ steps.find_jar.outputs.jar_file }}
           asset_name: ${{ steps.find_jar.outputs.jar_name }}
           asset_content_type: application/java-archive
+          
+      - name: Publish to Maven (Optional)
+        if: env.MAVEN_USERNAME != '' && env.MAVEN_PASSWORD != ''
+        run: ./gradlew publish --no-daemon
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
