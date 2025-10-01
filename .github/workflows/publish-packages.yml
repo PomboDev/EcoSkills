@@ -91,10 +91,3 @@ jobs:
           asset_path: ${{ steps.find_jar.outputs.jar_file }}
           asset_name: ${{ steps.find_jar.outputs.jar_name }}
           asset_content_type: application/java-archive
-          
-      - name: Publish to Maven (Optional)
-        if: env.MAVEN_USERNAME != '' && env.MAVEN_PASSWORD != ''
-        run: ./gradlew publish
-        env:
-          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
