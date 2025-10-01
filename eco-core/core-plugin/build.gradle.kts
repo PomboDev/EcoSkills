@@ -6,8 +6,7 @@ dependencies {
     compileOnly("com.github.ben-manes.caffeine:caffeine:3.2.0")
 
     implementation("com.willfp:ecomponent:1.4.1")
-    implementation("com.willfp:libreforge:${findProperty("libreforge-version")}")
-    implementation("com.willfp:eco:6.75.0")
+    // Note: libreforge dependency is handled by the libreforge-gradle-plugin
 }
 
 publishing {
