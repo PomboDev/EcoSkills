@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":eco-core:core-nms:v1_21_4"))
     implementation(project(":eco-core:core-nms:v1_21_5"))
     implementation(project(":eco-core:core-nms:v1_21_7"))
+    implementation(project(":eco-core:core-nms:v1_21_8"))
 }
 
 allprojects {
